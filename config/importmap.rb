@@ -24,3 +24,4 @@ pin "@lezer/lr", to: "https://cdn.jsdelivr.net/npm/@lezer/lr@1.4.0/dist/index.js
 pin "crelt", to: "https://cdn.jsdelivr.net/npm/crelt@1.0.6/index.js"
 pin "style-mod", to: "https://cdn.jsdelivr.net/npm/style-mod@4.1.0/src/style-mod.js"
 pin "w3c-keyname", to: "https://cdn.jsdelivr.net/npm/w3c-keyname@2.2.8/index.js"
+pin "canvas-confetti", to: "https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.module.mjs"
