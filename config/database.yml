@@ -81,6 +81,8 @@ test:
 production:
   primary: &primary_production
     <<: *default
+    # 👇 ESTA ES LA LÍNEA MÁGICA QUE FALTABA
+    url: <%= ENV["DATABASE_URL"] %>
     database: go_store_production
     username: go_store
     password: <%= ENV["GO_STORE_DATABASE_PASSWORD"] %>
