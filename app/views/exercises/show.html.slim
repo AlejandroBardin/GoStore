@@ -5,12 +5,12 @@ div class="flex h-[calc(100vh-7rem)] overflow-hidden"
       svg.w-4.h-4.mr-2 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
         path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"
       | Volver al Curriculum
-      
+
     h1.text-3xl.font-bold.mb-4 = @exercise.title
-    
+
     .prose.prose-invert.max-w-none
       = simple_format @exercise.description
-      
+
     .mt-8
       h3.text-xl.font-semibold.mb-2 Tu Misión
       p.text-gray-300 Revisa el código de la derecha y refactorízalo según las instrucciones.
@@ -18,11 +18,14 @@ div class="flex h-[calc(100vh-7rem)] overflow-hidden"
   / Right Panel: Code
   .w-1/2.h-full.overflow-y-auto.bg-gray-950.p-8
     h2.text-xl.font-semibold.mb-4.text-gray-400 Código Inicial
-    
-    div data-controller="editor" class="mb-8"
+
+    div data-controller="editor" data-editor-exercise-id-value=@exercise.id class="mb-8"
       input type="hidden" data-editor-target="input" value=@exercise.initial_code
-      div class="rounded-lg overflow-hidden border border-gray-700 min-h-[300px]" data-editor-target="editor"
-        
+      div class="rounded-lg overflow-hidden border border-gray-700 min-h-[300px] mb-4" data-editor-target="editor"
+
+      button.bg-green-600.hover:bg-green-700.text-white.font-bold.py-2.px-4.rounded data-action="click->editor#checkSolution"
+        | Check Your Code
+
     h2.text-xl.font-semibold.mb-4.text-green-400 Solución Esperada
     pre.rounded-lg.overflow-hidden
       code.ruby data-controller="highlight"

@@ -8,10 +8,11 @@ import { oneDark } from "@codemirror/theme-one-dark"
 
 export default class extends Controller {
   static targets = ["editor", "input"]
+  static values = { exerciseId: Number }
 
   connect() {
     console.log("Editor controller connected (Legacy Mode)")
-    
+
     const initialContent = this.inputTarget.value
 
     const startState = EditorState.create({
@@ -43,5 +44,31 @@ export default class extends Controller {
     if (this.editor) {
       this.editor.destroy()
     }
+  }
+
+  checkSolution() {
+    const code = this.inputTarget.value
+    const exerciseId = this.exerciseIdValue
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content
+
+    console.log("Submitting solution for Exercise", exerciseId)
+
+    fetch(`/exercises/${exerciseId}/check_solution`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken
+      },
+      body: JSON.stringify({ code: code })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("Server response:", data)
+      alert(data.message)
+    })
+    .catch(error => {
+      console.error("Error:", error)
+      alert("Error submitting solution")
+    })
   }
 }
