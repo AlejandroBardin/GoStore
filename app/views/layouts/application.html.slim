@@ -1,0 +1,31 @@
+doctype html
+html
+  head
+    title = content_for(:title) || "GoStore"
+    meta name="viewport" content="width=device-width,initial-scale=1"
+    meta name="apple-mobile-web-app-capable" content="yes"
+    meta name="mobile-web-app-capable" content="yes"
+    = csrf_meta_tags
+    = csp_meta_tag
+
+    = yield :head
+
+    link rel="icon" href="/icon.png" type="image/png"
+    link rel="icon" href="/icon.svg" type="image/svg+xml"
+    link rel="apple-touch-icon" href="/icon.png"
+    
+    / Highlight.js Theme
+    link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+
+    = stylesheet_link_tag :app, "data-turbo-track": "reload"
+    = javascript_importmap_tags
+
+  body.bg-gray-900.text-white.antialiased
+    nav class="border-b border-gray-800 bg-gray-900/95 backdrop-blur supports-[backdrop-filter]:bg-gray-900/60 sticky top-0 z-50"
+      .container.mx-auto.px-5.h-16.flex.items-center.justify-between
+        = link_to root_path, class: "flex items-center gap-3 hover:opacity-90 transition" do
+          = image_tag "logo.png", class: "h-8 w-auto", alt: "GoStore Logo"
+          span.font-bold.text-xl.tracking-tight GoStore
+
+    main.container.mx-auto.mt-10.px-5
+      = yield

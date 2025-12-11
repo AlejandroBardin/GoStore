@@ -1,0 +1,29 @@
+.flex.h-screen.overflow-hidden
+  / Left Panel: Description
+  .w-1/2.h-full.overflow-y-auto.p-8.border-r.border-gray-700.bg-gray-900
+    = link_to course_modules_path, class: "inline-flex items-center text-gray-400 hover:text-white mb-6" do
+      svg.w-4.h-4.mr-2 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+        path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"
+      | Volver al Curriculum
+      
+    h1.text-3xl.font-bold.mb-4 = @exercise.title
+    
+    .prose.prose-invert.max-w-none
+      = simple_format @exercise.description
+      
+    .mt-8
+      h3.text-xl.font-semibold.mb-2 Tu Misión
+      p.text-gray-300 Revisa el código de la derecha y refactorízalo según las instrucciones.
+
+  / Right Panel: Code
+  .w-1/2.h-full.overflow-y-auto.bg-gray-950.p-8
+    h2.text-xl.font-semibold.mb-4.text-gray-400 Código Inicial
+    
+    pre.rounded-lg.overflow-hidden.mb-8
+      code.ruby data-controller="highlight"
+        = @exercise.initial_code
+        
+    h2.text-xl.font-semibold.mb-4.text-green-400 Solución Esperada
+    pre.rounded-lg.overflow-hidden
+      code.ruby data-controller="highlight"
+        = @exercise.solution_code
