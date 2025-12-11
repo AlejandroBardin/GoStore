@@ -1,6 +1,6 @@
-div class="flex h-[calc(100vh-7rem)] overflow-hidden"
+div class="flex flex-col md:flex-row gap-8 md:h-full"
   / Left Panel: Description
-  .w-1/2.h-full.overflow-y-auto.p-8.border-r.border-gray-700.bg-gray-900
+  div class="w-full md:w-1/2 h-auto md:h-full overflow-y-visible md:overflow-y-auto p-8 border-b md:border-b-0 md:border-r border-gray-700 bg-gray-900 rounded-lg"
     = link_to course_modules_path, class: "inline-flex items-center text-gray-400 hover:text-white mb-6" do
       svg.w-4.h-4.mr-2 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
         path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"
@@ -16,7 +16,7 @@ div class="flex h-[calc(100vh-7rem)] overflow-hidden"
       p.text-gray-300 Revisa el código de la derecha y refactorízalo según las instrucciones.
 
   / Right Panel: Code
-  .w-1/2.h-full.overflow-y-auto.bg-gray-950.p-8 data-controller="editor" data-editor-exercise-id-value=@exercise.id
+  div class="w-full md:w-1/2 h-auto md:h-full min-h-[500px] overflow-y-visible md:overflow-y-auto bg-gray-950 p-8 rounded-lg" data-controller="editor" data-editor-exercise-id-value=@exercise.id
     h2.text-xl.font-semibold.mb-4.text-gray-400 Código Inicial
 
     div class="mb-8"
@@ -39,7 +39,7 @@ div class="flex h-[calc(100vh-7rem)] overflow-hidden"
     h2.text-xl.font-semibold.mb-4.text-green-400 Solución Esperada
 
     div data-editor-target="solutionContainer" class="hidden"
-      pre.rounded-lg.overflow-hidden
+      pre.rounded-lg.overflow-x-auto
         code.ruby data-controller="highlight"
           = @exercise.solution_code
 
