@@ -19,9 +19,9 @@
   .w-1/2.h-full.overflow-y-auto.bg-gray-950.p-8
     h2.text-xl.font-semibold.mb-4.text-gray-400 Código Inicial
     
-    pre.rounded-lg.overflow-hidden.mb-8
-      code.ruby data-controller="highlight"
-        = @exercise.initial_code
+    div data-controller="editor" class="mb-8"
+      input type="hidden" data-editor-target="input" value=@exercise.initial_code
+      div class="rounded-lg overflow-hidden border border-gray-700 min-h-[300px]" data-editor-target="editor"
         
     h2.text-xl.font-semibold.mb-4.text-green-400 Solución Esperada
     pre.rounded-lg.overflow-hidden
