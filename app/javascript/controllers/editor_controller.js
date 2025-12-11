@@ -5,9 +5,10 @@ import { defaultKeymap, history, historyKeymap } from "@codemirror/commands"
 import { syntaxHighlighting, defaultHighlightStyle, bracketMatching, StreamLanguage } from "@codemirror/language"
 import { ruby } from "@codemirror/legacy-modes/mode/ruby"
 import { oneDark } from "@codemirror/theme-one-dark"
+import confetti from "canvas-confetti"
 
 export default class extends Controller {
-  static targets = ["editor", "input"]
+  static targets = ["editor", "input", "modal", "modalTitle", "modalMessage", "solutionContainer", "solutionButton"]
   static values = { exerciseId: Number }
 
   connect() {
@@ -64,11 +65,50 @@ export default class extends Controller {
     .then(response => response.json())
     .then(data => {
       console.log("Server response:", data)
-      alert(data.message)
+
+      if (data.status === "success") {
+        this.triggerConfetti()
+        this.showModal("¡Excelente Trabajo! 🎉", data.message, true)
+      } else {
+        this.showModal("Ups, algo falló 😅", data.message, false)
+      }
     })
     .catch(error => {
       console.error("Error:", error)
-      alert("Error submitting solution")
+      this.showModal("Error de Conexión", "No pudimos contactar al servidor.", false)
     })
+  }
+
+  showModal(title, message, isSuccess) {
+    this.modalTitleTarget.textContent = title
+    this.modalMessageTarget.textContent = message
+
+    // Color coding based on success/failure
+    const titleClass = isSuccess ? "text-green-400" : "text-red-400"
+    this.modalTitleTarget.className = `text-2xl font-bold mb-4 ${titleClass}`
+
+    this.modalTarget.classList.remove("hidden")
+  }
+
+  closeModal() {
+    this.modalTarget.classList.add("hidden")
+  }
+
+  triggerConfetti() {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 }
+    })
+  }
+
+  toggleSolution() {
+    this.solutionContainerTarget.classList.toggle("hidden")
+
+    if (this.solutionContainerTarget.classList.contains("hidden")) {
+      this.solutionButtonTarget.textContent = "¿Ver solución?"
+    } else {
+      this.solutionButtonTarget.textContent = "Ocultar solución"
+    }
   }
 }
