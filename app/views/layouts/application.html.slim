@@ -13,19 +13,27 @@ html
     link rel="icon" href="/icon.png" type="image/png"
     link rel="icon" href="/icon.svg" type="image/svg+xml"
     link rel="apple-touch-icon" href="/icon.png"
-    
+
     / Highlight.js Theme
     link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
 
     = stylesheet_link_tag :app, "data-turbo-track": "reload"
     = javascript_importmap_tags
 
-  body.bg-gray-900.text-white.antialiased
-    nav class="border-b border-gray-800 bg-gray-900/95 backdrop-blur supports-[backdrop-filter]:bg-gray-900/60 sticky top-0 z-50"
+  body.bg-gray-900.text-white.antialiased.flex.flex-col.min-h-screen.md:h-screen.md:overflow-hidden
+    nav class="border-b border-gray-800 bg-gray-900/95 backdrop-blur supports-[backdrop-filter]:bg-gray-900/60 sticky top-0 z-50 flex-none"
       .container.mx-auto.px-5.h-16.flex.items-center.justify-between
         = link_to root_path, class: "flex items-center gap-3 hover:opacity-90 transition" do
           = image_tag "logo.png", class: "h-8 w-auto", alt: "GoStore Logo"
           span.font-bold.text-xl.tracking-tight GoStore
 
-    main.container.mx-auto.mt-10.px-5
+    main.container.mx-auto.mt-10.px-5.md:flex-1.md:overflow-hidden.flex.flex-col.md:pb-0
       = yield
+      / Mobile Spacer to ensure footer is reachable
+      .h-8.md:hidden
+
+    footer.border-t.border-gray-800.bg-gray-900.py-8.flex-none.mt-auto
+      .container.mx-auto.px-5.text-center
+        p.text-gray-500.text-sm
+          | Built with 💻 & ☕ by
+          a.text-blue-400.hover:text-blue-300.font-medium.transition href="https://www.linkedin.com/in/ale-bardin/" target="_blank" rel="noopener noreferrer" Ale Bardin
