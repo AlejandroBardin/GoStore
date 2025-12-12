@@ -15,35 +15,40 @@ div class="flex flex-col md:flex-row gap-8 md:h-full"
       h3.text-xl.font-semibold.mb-2 Tu Misión
       p.text-gray-300 Revisa el código de la derecha y refactorízalo según las instrucciones.
 
-  / Right Panel: Code
-  div class="w-full md:w-1/2 h-auto md:h-full min-h-[500px] overflow-y-visible md:overflow-y-auto bg-gray-950 p-8 rounded-lg" data-controller="editor" data-editor-exercise-id-value=@exercise.id
-    h2.text-xl.font-semibold.mb-4.text-gray-400 Código Inicial
+  / Right Panel: Editor
+  div class="w-full md:w-1/2 h-auto md:h-full flex flex-col bg-[#282c34]" data-controller="editor" data-editor-exercise-id-value=@exercise.id
+    / Toolbar
+    div class="flex items-center justify-between px-4 py-2 bg-[#21252b] border-b border-black"
+      span.text-xs.text-gray-400.font-mono main.rb
+      button.bg-green-600.hover:bg-green-700.text-white.px-4.py-1.rounded.text-sm.font-medium.transition.flex.items-center.gap-2 data-action="click->editor#checkSolution"
+        span ▶ Run Code
 
-    div class="mb-8"
-      input type="hidden" data-editor-target="input" value=@exercise.initial_code
-      div class="rounded-lg overflow-hidden border border-gray-700 min-h-[300px] mb-4" data-editor-target="editor"
+    / Editor Container
+    .flex-1.relative.overflow-hidden
+      / The CodeMirror instance will be mounted here
+      #editor.absolute.inset-0 data-editor-target="editor"
 
-      button.bg-green-600.hover:bg-green-700.text-white.font-bold.py-2.px-4.rounded data-action="click->editor#checkSolution"
-        | Check Your Code
+      / Hidden input to store code and initialize editor
+      input type="hidden" data-editor-target="input" value=(@submission&.code || @exercise.initial_code)
 
-      / Result Modal
-      div data-editor-target="modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300"
-        div class="bg-gray-900 border border-gray-700 rounded-xl p-8 max-w-md w-full shadow-2xl transform transition-all scale-100"
-          div class="text-center"
-            h3 data-editor-target="modalTitle" class="text-2xl font-bold mb-4 text-white"
-            p data-editor-target="modalMessage" class="text-gray-300 mb-8 text-lg"
+    / Result Modal
+    div data-editor-target="modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300"
+      div class="bg-gray-900 border border-gray-700 rounded-xl p-8 max-w-md w-full shadow-2xl transform transition-all scale-100"
+        div class="text-center"
+          h3 data-editor-target="modalTitle" class="text-2xl font-bold mb-4 text-white"
+          p data-editor-target="modalMessage" class="text-gray-300 mb-8 text-lg"
 
-            button data-action="click->editor#closeModal" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition-colors duration-200"
-              | Continuar
+          button data-action="click->editor#closeModal" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition-colors duration-200"
+            | Continuar
 
-    h2.text-xl.font-semibold.mb-4.text-green-400 Solución Esperada
+    / Solution Section
+    .bg-gray-900.border-t.border-gray-700.p-4
+       button data-action="click->editor#toggleSolution" data-editor-target="solutionButton" class="text-sm text-gray-500 hover:text-white underline decoration-dotted block mb-2"
+         | ¿Ver solución?
 
-    div data-editor-target="solutionContainer" class="hidden"
-      pre.rounded-lg.overflow-x-auto
-        code.ruby data-controller="highlight"
-          = @exercise.solution_code
-
-    button data-action="click->editor#toggleSolution" data-editor-target="solutionButton" class="text-sm text-gray-500 hover:text-white underline decoration-dotted"
-      | ¿Ver solución?
+       div data-editor-target="solutionContainer" class="hidden"
+         pre.rounded-lg.overflow-x-auto.bg-gray-950.p-4
+           code.ruby data-controller="highlight"
+             = @exercise.solution_code
 
 
