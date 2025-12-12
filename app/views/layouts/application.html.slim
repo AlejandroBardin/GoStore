@@ -27,6 +27,14 @@ html
           = image_tag "logo.png", class: "h-8 w-auto", alt: "GoStore Logo"
           span.font-bold.text-xl.tracking-tight GoStore
 
+        .flex.items-center.gap-4
+          - if authenticated?
+            span.text-gray-400.text-sm.hidden.md:inline Welcome, #{Current.user.email_address}
+            = button_to "Log out", session_path, method: :delete, class: "text-sm font-medium text-gray-300 hover:text-white transition bg-transparent border-0 cursor-pointer"
+          - else
+            = link_to "Log in", new_session_path, class: "text-sm font-medium text-gray-300 hover:text-white transition"
+            = link_to "Sign up", new_registration_path, class: "text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
+
     main.container.mx-auto.mt-10.px-5.md:flex-1.md:overflow-hidden.flex.flex-col.md:pb-0
       = yield
       / Mobile Spacer to ensure footer is reachable
