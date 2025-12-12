@@ -17,5 +17,9 @@ class User < ApplicationRecord
 
   def create_default_wallet
     create_wallet(balance: 1000)
+    # Grant free avatars
+    Product.where(price: 0, category: :avatar).each do |avatar|
+      purchases.create(product: avatar)
+    end
   end
 end

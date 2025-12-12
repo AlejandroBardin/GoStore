@@ -16,16 +16,24 @@ class ExercisesController < ApplicationController
   def check_solution
     code = params[:code]
     result = evaluate_submission(code)
-
     status = result[:status] == "success" ? :passed : :failed
 
     submission = Current.user.submissions.find_or_initialize_by(exercise: @exercise)
-    submission.update(code: code, status: status)
+    already_passed = submission.passed?
+    submission.update(code: code, status: already_passed ? :passed : status)
+
+    process_reward(result) if status == :passed && !already_passed
 
     render json: result
   end
 
   private
+
+  def process_reward(result)
+    reward = 100
+    Current.user.wallet.deposit(reward)
+    result[:message] += "\n\n🎉 ¡Has ganado #{reward} monedas! 🪙 Tu código es super elegante."
+  end
 
   def evaluate_submission(code)
     return security_error if security_risk?(code)

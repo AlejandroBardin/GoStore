@@ -82,13 +82,19 @@ Exercise.create!(
 )
 
 puts "Seeding Products..."
-Product.destroy_all
-Product.create!([
+# Product.destroy_all # Commented out to preserve purchases
+[
   { name: "Aang", price: 1000, category: :avatar, image_url: "Avatar_Aang.png" },
   { name: "Iroh", price: 1500, category: :avatar, image_url: "AVatar_IROH.png" },
   { name: "Sokka", price: 500, category: :avatar, image_url: "AVATAR_SOKKA.png" },
   { name: "Toph", price: 1200, category: :avatar, image_url: "AVATAR_TOPH.png" },
-  { name: "Zuko", price: 800, category: :avatar, image_url: "Avatar_Zuko.png" }
-])
+  { name: "Zuko", price: 800, category: :avatar, image_url: "Avatar_Zuko.png" },
+  { name: "Vaatu", price: 0, category: :avatar, image_url: "AVATAR_VAATU.png" },
+  { name: "Raava", price: 0, category: :avatar, image_url: "AVATAR_RAAVA.png" }
+].each do |product_data|
+  Product.find_or_create_by!(name: product_data[:name]) do |product|
+    product.assign_attributes(product_data)
+  end.update!(product_data) # Update attributes in case they changed
+end
 
 puts "Seeding complete!"
