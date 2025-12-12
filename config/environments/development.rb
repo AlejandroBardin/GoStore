@@ -12,6 +12,9 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
 
+  # Allow ngrok tunneling
+  config.hosts << /.*\.ngrok-free\.app/
+
   # Enable server timing.
   config.server_timing = true
 
