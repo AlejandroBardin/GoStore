@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_12_034423) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_12_051738) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -62,6 +62,24 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_12_034423) do
     t.index ["course_module_id"], name: "index_exercises_on_course_module_id"
   end
 
+  create_table "products", force: :cascade do |t|
+    t.integer "category"
+    t.datetime "created_at", null: false
+    t.string "image_url"
+    t.string "name"
+    t.integer "price", default: 0
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "purchases", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "product_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["product_id"], name: "index_purchases_on_product_id"
+    t.index ["user_id"], name: "index_purchases_on_user_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "ip_address"
@@ -91,10 +109,21 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_12_034423) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  create_table "wallets", force: :cascade do |t|
+    t.integer "balance", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_wallets_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "exercises", "course_modules"
+  add_foreign_key "purchases", "products"
+  add_foreign_key "purchases", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "submissions", "exercises"
   add_foreign_key "submissions", "users"
+  add_foreign_key "wallets", "users"
 end

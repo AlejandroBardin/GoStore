@@ -22,9 +22,25 @@ div class="max-w-2xl mx-auto mt-10"
               circle.opacity-25 cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
               path.opacity-75 fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
 
-        div
-          = form.label :avatar, "Change Avatar", class: "block text-sm font-medium text-gray-300 mb-2"
-          = form.file_field :avatar, class: "block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer", data: { profile_upload_target: "input", action: "change->profile-upload#preview" }
+        div class="flex-1"
+          h3.text-sm.font-medium.text-gray-300.mb-3 Select Avatar
+
+          - if @purchased_avatars.any?
+            div class="grid grid-cols-4 gap-4"
+              - @purchased_avatars.each do |avatar|
+                label class="cursor-pointer group relative"
+                  = form.radio_button :avatar_product_id, avatar.id, class: "peer sr-only", onchange: "this.form.submit()"
+
+                  div class="p-2 rounded-lg border-2 border-gray-700 peer-checked:border-blue-500 peer-checked:bg-blue-500/10 hover:border-gray-500 transition"
+                    = image_tag avatar.image_url, class: "w-12 h-12 rounded-full mx-auto object-cover"
+
+                  div class="absolute -top-2 -right-2 hidden peer-checked:block"
+                    span.bg-blue-500.text-white.rounded-full.p-0.5
+                      svg.w-3.h-3 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                        path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"
+          - else
+            p.text-sm.text-gray-500 No avatars purchased yet.
+            = link_to "Visit Shop", products_path, class: "text-blue-400 hover:text-blue-300 text-sm"
 
       div
         = form.label :email_address, class: "block text-sm font-medium text-gray-300 mb-2"

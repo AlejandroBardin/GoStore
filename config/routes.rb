@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   root "course_modules#index"
 
   resources :course_modules, only: [:index]
+  resources :products, only: [:index] do
+    post :purchase, on: :member
+  end
   resources :exercises, only: [:show] do
     member do
       post :check_solution
