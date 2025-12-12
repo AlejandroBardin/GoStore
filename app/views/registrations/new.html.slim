@@ -1,0 +1,29 @@
+div class="min-h-[calc(100vh-10rem)] flex items-center justify-center"
+  .w-full.max-w-md.bg-gray-800.rounded-lg.shadow-lg.p-8.border.border-gray-700
+    h2.text-3xl.font-bold.text-center.mb-8.text-white Sign Up
+
+    = form_with model: @user, url: registrations_path, class: "space-y-6" do |form|
+      - if @user.errors.any?
+        .bg-red-900/50.border.border-red-500.text-red-200.px-4.py-3.rounded.mb-4
+          ul.list-disc.list-inside
+            - @user.errors.full_messages.each do |message|
+              li = message
+
+      div
+        = form.label :email_address, class: "block text-sm font-medium text-gray-300 mb-2"
+        = form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", class: "w-full px-4 py-2 bg-gray-900 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+
+      div
+        = form.label :password, class: "block text-sm font-medium text-gray-300 mb-2"
+        = form.password_field :password, required: true, autocomplete: "new-password", class: "w-full px-4 py-2 bg-gray-900 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+
+      div
+        = form.label :password_confirmation, class: "block text-sm font-medium text-gray-300 mb-2"
+        = form.password_field :password_confirmation, required: true, autocomplete: "new-password", class: "w-full px-4 py-2 bg-gray-900 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+
+      div
+        = form.submit "Sign Up", class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200 cursor-pointer"
+
+    .mt-6.text-center.text-sm.text-gray-400
+      | Already have an account?
+      = link_to "Log in", new_session_path, class: "text-blue-400 hover:text-blue-300 font-medium"
