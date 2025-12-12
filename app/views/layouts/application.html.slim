@@ -29,8 +29,15 @@ html
 
         .flex.items-center.gap-4
           - if authenticated?
-            span.text-gray-400.text-sm.hidden.md:inline Welcome, #{Current.user.email_address}
-            = button_to "Log out", session_path, method: :delete, class: "text-sm font-medium text-gray-300 hover:text-white transition bg-transparent border-0 cursor-pointer"
+            = link_to profile_path, class: "flex items-center gap-3 hover:opacity-80 transition group" do
+              - if Current.user.avatar.attached?
+                = image_tag Current.user.avatar, class: "w-8 h-8 rounded-full object-cover border border-gray-600 group-hover:border-blue-400 transition"
+              - else
+                .w-8.h-8.rounded-full.bg-gray-700.flex.items-center.justify-center.border.border-gray-600.group-hover:border-blue-400.transition
+                  span.text-xs 👤
+              span.text-gray-300.text-sm.font-medium.hidden.md:block = Current.user.email_address.split('@').first.capitalize
+
+            = button_to "Log out", session_path, method: :delete, class: "text-sm font-medium text-gray-400 hover:text-white transition bg-transparent border-0 cursor-pointer ml-2"
           - else
             = link_to "Log in", new_session_path, class: "text-sm font-medium text-gray-300 hover:text-white transition"
             = link_to "Sign up", new_registration_path, class: "text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"

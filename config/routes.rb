@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   resources :registrations, only: [:new, :create]
+  resource :profile, only: [:show, :update]
   root "course_modules#index"
 
   resources :course_modules, only: [:index]
