@@ -27,6 +27,10 @@ export default class extends Controller {
         keymap.of([...defaultKeymap, ...historyKeymap]),
         StreamLanguage.define(ruby),
         oneDark,
+        EditorView.theme({
+          "&": { height: "100%" },
+          ".cm-scroller": { overflow: "auto" }
+        }),
         EditorView.updateListener.of((update) => {
           if (update.docChanged) {
             this.inputTarget.value = update.state.doc.toString()

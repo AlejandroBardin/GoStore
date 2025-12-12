@@ -9,11 +9,18 @@ class ExercisesController < ApplicationController
     { price: 100, points: 0, code: "NONE", expected: 100.0, msg: "❌ El cálculo sin descuento es incorrecto." }
   ].freeze
 
-  def show; end
+  def show
+    @submission = Current.user&.submissions&.find_by(exercise: @exercise)
+  end
 
   def check_solution
     code = params[:code]
     result = evaluate_submission(code)
+
+    status = result[:status] == "success" ? :passed : :failed
+
+    submission = Current.user.submissions.find_or_initialize_by(exercise: @exercise)
+    submission.update(code: code, status: status)
 
     render json: result
   end
