@@ -14,6 +14,7 @@ class PurchaseAvatarService
 
     ActiveRecord::Base.transaction do
       wallet = @user.wallet || @user.create_wallet
+      wallet.lock! # Pessimistic locking to prevent race conditions
 
       raise Error, "Insufficient funds" unless wallet.withdraw(@product.price)
 
