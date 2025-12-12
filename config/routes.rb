@@ -1,7 +1,14 @@
 Rails.application.routes.draw do
+  resource :session
+  resources :passwords, param: :token
+  resources :registrations, only: [:new, :create]
+  resource :profile, only: [:show, :update]
   root "course_modules#index"
 
   resources :course_modules, only: [:index]
+  resources :products, only: [:index] do
+    post :purchase, on: :member
+  end
   resources :exercises, only: [:show] do
     member do
       post :check_solution

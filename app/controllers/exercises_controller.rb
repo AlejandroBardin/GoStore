@@ -9,16 +9,31 @@ class ExercisesController < ApplicationController
     { price: 100, points: 0, code: "NONE", expected: 100.0, msg: "❌ El cálculo sin descuento es incorrecto." }
   ].freeze
 
-  def show; end
+  def show
+    @submission = Current.user&.submissions&.find_by(exercise: @exercise)
+  end
 
   def check_solution
     code = params[:code]
     result = evaluate_submission(code)
+    status = result[:status] == "success" ? :passed : :failed
+
+    submission = Current.user.submissions.find_or_initialize_by(exercise: @exercise)
+    already_passed = submission.passed?
+    submission.update(code: code, status: already_passed ? :passed : status)
+
+    process_reward(result) if status == :passed && !already_passed
 
     render json: result
   end
 
   private
+
+  def process_reward(result)
+    reward = 100
+    Current.user.wallet.deposit(reward)
+    result[:message] += "\n\n🎉 ¡Has ganado #{reward} monedas! 🪙 Tu código es super elegante."
+  end
 
   def evaluate_submission(code)
     return security_error if security_risk?(code)

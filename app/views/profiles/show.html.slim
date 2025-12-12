@@ -1,0 +1,62 @@
+div class="max-w-2xl mx-auto mt-10"
+  .bg-gray-800.rounded-lg.shadow-lg.p-8.border.border-gray-700
+    h1.text-3xl.font-bold.text-white.mb-8 Your Profile
+
+    = form_with model: Current.user, url: profile_path, method: :patch, class: "space-y-6", data: { controller: "profile-upload", action: "submit->profile-upload#submit" } do |form|
+      - if Current.user.errors.any?
+        .bg-red-900/50.border.border-red-500.text-red-200.px-4.py-3.rounded.mb-4
+          ul.list-disc.list-inside
+            - Current.user.errors.full_messages.each do |message|
+              li = message
+
+      .flex.items-center.gap-6.mb-8
+        .relative
+          - if Current.user.avatar.attached?
+            = image_tag Current.user.avatar, class: "w-24 h-24 rounded-full object-cover border-2 border-blue-500 transition duration-300", data: { profile_upload_target: "preview" }
+          - else
+            = image_tag "https://ui-avatars.com/api/?name=#{Current.user.email_address}&background=374151&color=fff&size=128", class: "w-24 h-24 rounded-full object-cover border-2 border-gray-600 transition duration-300", data: { profile_upload_target: "preview" }
+
+          / Loading Spinner Overlay
+          .absolute.inset-0.flex.items-center.justify-center.bg-black/50.rounded-full.hidden data-profile-upload-target="loading"
+            svg.animate-spin.h-8.w-8.text-white xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              circle.opacity-25 cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
+              path.opacity-75 fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+
+        div class="flex-1"
+          h3.text-sm.font-medium.text-gray-300.mb-3 Select Avatar
+
+          - if @purchased_avatars.any?
+            div class="grid grid-cols-4 gap-4"
+              - @purchased_avatars.each do |avatar|
+                label class="cursor-pointer group relative"
+                  = form.radio_button :avatar_product_id, avatar.id, class: "peer sr-only", onchange: "this.form.submit()"
+
+                  div class="p-2 rounded-lg border-2 border-gray-700 peer-checked:border-blue-500 peer-checked:bg-blue-500/10 hover:border-gray-500 transition"
+                    = image_tag avatar.image_url, class: "w-12 h-12 rounded-full mx-auto object-cover"
+
+                  div class="absolute -top-2 -right-2 hidden peer-checked:block"
+                    span.bg-blue-500.text-white.rounded-full.p-0.5
+                      svg.w-3.h-3 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                        path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"
+          - else
+            p.text-sm.text-gray-500 No avatars purchased yet.
+            = link_to "Visit Shop", products_path, class: "text-blue-400 hover:text-blue-300 text-sm"
+
+      div
+        = form.label :email_address, class: "block text-sm font-medium text-gray-300 mb-2"
+        = form.email_field :email_address, disabled: true, class: "w-full px-4 py-2 bg-gray-900 border border-gray-600 rounded-lg text-gray-400 cursor-not-allowed"
+        p.text-xs.text-gray-500.mt-1 Email cannot be changed.
+
+      .border-t.border-gray-700.pt-6.mt-6
+        h3.text-xl.font-semibold.text-white.mb-4 Change Password
+
+        div.mb-4
+          = form.label :password, "New Password (leave blank to keep current)", class: "block text-sm font-medium text-gray-300 mb-2"
+          = form.password_field :password, autocomplete: "new-password", class: "w-full px-4 py-2 bg-gray-900 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+
+        div
+          = form.label :password_confirmation, class: "block text-sm font-medium text-gray-300 mb-2"
+          = form.password_field :password_confirmation, autocomplete: "new-password", class: "w-full px-4 py-2 bg-gray-900 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+
+      div.pt-4
+        = form.submit "Save Changes", class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200 cursor-pointer", data: { profile_upload_target: "submit" }
