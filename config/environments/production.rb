@@ -80,10 +80,17 @@ Rails.application.configure do
   config.active_record.attributes_for_inspect = [ :id ]
 
   # Enable DNS rebinding protection and other `Host` header attacks.
-  # config.hosts = [
-  #   "example.com",     # Allow requests from example.com
-  #   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
-  # ]
+  # Enable DNS rebinding protection and other `Host` header attacks.
+  config_file = Rails.root.join("config/settings/production.yml")
+  if config_file.exist?
+    require "yaml"
+    require "uri"
+    settings = YAML.load_file(config_file)
+    if settings["app_url"].present?
+      host = URI.parse(settings["app_url"]).host
+      config.hosts << host if host
+    end
+  end
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }

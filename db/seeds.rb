@@ -84,13 +84,16 @@ Exercise.create!(
 puts "Seeding Products..."
 # Product.destroy_all # Commented out to preserve purchases
 [
-  { name: "Aang", price: 1000, category: :avatar, image_url: "Avatar_Aang.png" },
-  { name: "Iroh", price: 1500, category: :avatar, image_url: "AVatar_IROH.png" },
-  { name: "Sokka", price: 500, category: :avatar, image_url: "AVATAR_SOKKA.png" },
-  { name: "Toph", price: 1200, category: :avatar, image_url: "AVATAR_TOPH.png" },
-  { name: "Zuko", price: 800, category: :avatar, image_url: "Avatar_Zuko.png" },
-  { name: "Vaatu", price: 0, category: :avatar, image_url: "AVATAR_VAATU.png" },
-  { name: "Raava", price: 0, category: :avatar, image_url: "AVATAR_RAAVA.png" }
+  { name: "Aang", price: 1000, category: :avatar, image_url: "Avatar_Aang.png", currency: :ruby },
+  { name: "Iroh", price: 1500, category: :avatar, image_url: "AVatar_IROH.png", currency: :ruby },
+  { name: "Sokka", price: 500, category: :avatar, image_url: "AVATAR_SOKKA.png", currency: :ruby },
+  { name: "Toph", price: 1200, category: :avatar, image_url: "AVATAR_TOPH.png", currency: :ruby },
+  { name: "Zuko", price: 800, category: :avatar, image_url: "Avatar_Zuko.png", currency: :ruby },
+  { name: "Vaatu", price: 0, category: :avatar, image_url: "AVATAR_VAATU.png", currency: :ruby },
+  { name: "Raava", price: 0, category: :avatar, image_url: "AVATAR_RAAVA.png", currency: :ruby },
+  # Premium Avatars (Gold Coins)
+  { name: "Aang (Estado Avatar)", price: 5, category: :avatar, image_url: "AVATAR_AANG_ESTADO_AVATAR.png", currency: :gold },
+  { name: "Iroh (Dragón del Oeste)", price: 8, category: :avatar, image_url: "AVATAR_IROH_DRAGON_DEl_OESTE.png", currency: :gold }
 ].each do |product_data|
   Product.find_or_create_by!(name: product_data[:name]) do |product|
     product.assign_attributes(product_data)
