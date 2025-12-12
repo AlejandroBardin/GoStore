@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title = content_for(:title) || "GoStore"
+    title = content_for(:title) || "GoRails"
     meta name="viewport" content="width=device-width,initial-scale=1"
     meta name="apple-mobile-web-app-capable" content="yes"
     meta name="mobile-web-app-capable" content="yes"
@@ -10,9 +10,8 @@ html
 
     = yield :head
 
-    link rel="icon" href="/icon.png" type="image/png"
-    link rel="icon" href="/icon.svg" type="image/svg+xml"
-    link rel="apple-touch-icon" href="/icon.png"
+    link rel="icon" href=image_path("logo.png") type="image/png"
+    link rel="apple-touch-icon" href=image_path("logo.png")
 
     / Highlight.js Theme
     link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
@@ -24,10 +23,17 @@ html
     nav class="border-b border-gray-800 bg-gray-900/95 backdrop-blur supports-[backdrop-filter]:bg-gray-900/60 sticky top-0 z-50 flex-none"
       .container.mx-auto.px-5.h-16.flex.items-center.justify-between
         = link_to root_path, class: "flex items-center gap-3 hover:opacity-90 transition" do
-          = image_tag "logo.png", class: "h-8 w-auto", alt: "GoStore Logo"
-          span.font-bold.text-xl.tracking-tight GoStore
+          = image_tag "logo.png", class: "h-8 w-auto", alt: "GoRails Logo"
+          span.font-bold.text-xl.tracking-tight GoRails
 
         .flex.items-center.gap-4
+          = link_to "Curriculum", course_modules_path, class: "text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition"
+          = link_to products_path, class: "text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition flex items-center gap-1" do
+            span 🛍️ Tienda
+            - if Current.user
+              span class="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-0.5 rounded-full border border-yellow-500/30 ml-1"
+                | 🪙 #{Current.user.wallet&.balance || 0}
+
           - if authenticated?
             = link_to profile_path, class: "flex items-center gap-3 hover:opacity-80 transition group" do
               - if Current.user.avatar.attached?
@@ -42,7 +48,7 @@ html
             = link_to "Log in", new_session_path, class: "text-sm font-medium text-gray-300 hover:text-white transition"
             = link_to "Sign up", new_registration_path, class: "text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
 
-    main.container.mx-auto.mt-10.px-5.md:flex-1.md:overflow-hidden.flex.flex-col.md:pb-0
+    main.container.mx-auto.mt-10.px-5.md:flex-1.md:overflow-y-auto.flex.flex-col.md:pb-0
       = yield
       / Mobile Spacer to ensure footer is reachable
       .h-8.md:hidden
